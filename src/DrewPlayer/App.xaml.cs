@@ -70,6 +70,9 @@ public partial class App : Application
         DrewPlayer.MainWindow.Mark("settings loaded");
 
 #if DEBUG
+        var selfTest = Environment.GetEnvironmentVariable("DREWPLAYER_SELFTEST");
+        if (!string.IsNullOrEmpty(selfTest)) { SelfTest.RunPhoto(selfTest); Shutdown(0); return; }
+
         // test only: renders the settings pages off-screen and saves PNGs
         var dump = Environment.GetEnvironmentVariable("DREWPLAYER_DUMP_SETTINGS");
         if (!string.IsNullOrEmpty(dump))
@@ -124,7 +127,7 @@ public partial class App : Application
 
         // already running? hand the files to that instance (they become tabs) and exit
 #if DEBUG
-        if (DrewPlayer.MainWindow.BenchMode) { Store.Current.Ui.SingleWindow = false; Store.Current.Splash.Enabled = false; }
+        if (DrewPlayer.MainWindow.BenchMode) { Store.Current.Ui.SingleWindow = false; Store.Current.Splash.Enabled = Environment.GetEnvironmentVariable("DREWPLAYER_BENCH_SPLASH") == "1"; }
 #endif
         if (Store.Current.Ui.SingleWindow)
         {
@@ -147,11 +150,28 @@ public partial class App : Application
         {
             // The player starts right away, hidden, while the intro plays; the intro fades out
             // once its animation is over AND the first video frame is on screen.
-            var splash = new SplashWindow(Store.Current.Splash, Store.Current.Ui.AccentColor);
+            // The intro runs on its own UI thread, so creating the player windows here never makes it stutter.
+            var splashSettings = Store.Current.Splash;
+            var accent = Store.Current.Ui.AccentColor;
+            var ui = Dispatcher;
+            SplashWindow? splash = null;
+            var ready = new ManualResetEventSlim(); // not disposed: the intro thread may still signal it after a timeout
             bool animationDone = false, playerVisible = false;
-            void TryDismiss() { if (animationDone && playerVisible) splash.Dismiss(); }
-            splash.Finished += () => { animationDone = true; TryDismiss(); };
-            splash.Show();
+            void TryDismiss() { if (animationDone && playerVisible) splash?.Dispatcher.BeginInvoke(splash.Dismiss); }
+
+            var thread = new Thread(() =>
+            {
+                splash = new SplashWindow(splashSettings, accent);
+                splash.Finished += () => ui.BeginInvoke(() => { animationDone = true; TryDismiss(); });
+                splash.Closed += (_, _) => System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvokeShutdown(System.Windows.Threading.DispatcherPriority.Background);
+                splash.Show();
+                ready.Set();
+                System.Windows.Threading.Dispatcher.Run();
+            }) { IsBackground = true, Name = "intro" };
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            ready.Wait(2000);
+
             ShowMain(file);
             _main!.Revealed += () => { playerVisible = true; TryDismiss(); };
         }

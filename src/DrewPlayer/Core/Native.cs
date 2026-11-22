@@ -65,6 +65,42 @@ internal static class Native
         try { DwmSetWindowAttribute(hwnd, 13, ref v, sizeof(int)); } catch { }
     }
 
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct SHFILEOPSTRUCT
+    {
+        public IntPtr hwnd;
+        public uint wFunc;
+        public string pFrom;
+        public string? pTo;
+        public ushort fFlags;
+        public bool fAnyOperationsAborted;
+        public IntPtr hNameMappings;
+        public string? lpszProgressTitle;
+    }
+
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+    private static extern int SHFileOperation(ref SHFILEOPSTRUCT op);
+
+    /// <summary>Moves a file to the Recycle Bin (undoable). Returns false on failure.</summary>
+    public static bool RecycleFile(string path, IntPtr owner)
+    {
+        var op = new SHFILEOPSTRUCT
+        {
+            hwnd = owner,
+            wFunc = 3,                                   // FO_DELETE
+            pFrom = path + "\0\0",                       // double-null terminated list
+            fFlags = 0x40 | 0x10 | 0x4 | 0x400,          // ALLOWUNDO | NOCONFIRMATION | SILENT | NOERRORUI
+        };
+        return SHFileOperation(ref op) == 0 && !op.fAnyOperationsAborted && !File.Exists(path);
+    }
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    private static extern bool SystemParametersInfo(uint action, uint param, string vparam, uint winIni);
+
+    /// <summary>Sets the desktop background (current user).</summary>
+    public static bool SetWallpaper(string imagePath) =>
+        SystemParametersInfo(0x0014 /* SPI_SETDESKWALLPAPER */, 0, imagePath, 0x01 | 0x02 /* UPDATEINIFILE | SENDCHANGE */);
+
     public static IntPtr LParam(POINT p) => (IntPtr)((p.Y << 16) | (p.X & 0xFFFF));
 
     /// <summary>Windows 11: 1 = square corners, 2 = rounded.</summary>

@@ -76,7 +76,7 @@ public partial class OverlayWindow
     private void OnHideTick(object? sender, EventArgs e)
     {
         _hide.Stop();
-        if (_main.CurrentFile == null) return;
+        if (_main.CurrentFile == null || IsEditing) return;
         if (_waveDrag || _volDrag || _brightDrag) { _hide.Start(); return; }
         if (!_zen)
         {

@@ -17,6 +17,17 @@ public partial class OverlayWindow
         _hide.Stop();
     }
 
+    /// <summary>Opens the photo editor (optionally in crop mode with a 16:9 frame) for screenshots.</summary>
+    internal void DebugEditor(string path, bool crop)
+    {
+        OpenEditor(path);
+        if (!crop) return;
+        StartCrop();
+        _cropAspect = 16 / 9.0;
+        FitCropToAspect();
+        BuildEditBar();
+    }
+
     /// <summary>Renders the whole UI layer at device pixels (the video itself is not part of it).</summary>
     internal BitmapSource DebugRender()
     {

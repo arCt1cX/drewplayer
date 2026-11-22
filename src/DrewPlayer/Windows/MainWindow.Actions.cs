@@ -72,6 +72,24 @@ public partial class MainWindow
                 o.Osd("Speed 1×");
                 break;
             case "autonext": ToggleAutoNext(); break;
+            case "menu": o.ShowMoreMenu(); break;
+            case "edit_photo":
+                if (IsImage && HasFile) o.OpenEditor(CurrentFile!);
+                else o.Osd("Editing works on photos");
+                break;
+            case "rotate":
+                if (IsImage && HasFile) o.OpenEditor(CurrentFile!, quarterTurns: 1);
+                else RotateVideo();
+                break;
+            case "copy_image": CopyImage(); break;
+            case "set_wallpaper": SetAsWallpaper(); break;
+            case "show_in_folder": ShowInFolder(); break;
+            case "delete_file": DeleteCurrent(); break;
+            case "aspect": CycleAspect(); break;
+            case "ab_loop": AbLoop(); break;
+            case "audio_delay": AddAudioDelay(n); break;
+            case "sub_load": LoadSubtitles(); break;
+            case "deinterlace": ToggleDeinterlace(); break;
             case "brightness": SetBrightness(Brightness + n); break;
             case "brightness_reset": SetBrightness(0); break;
             case "zoom": ZoomStep(n >= 0 ? 1 : -1); break;

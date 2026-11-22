@@ -52,6 +52,7 @@
                 </DockPanel>
                 <!-- top bar buttons: order/placement come from the settings (Layout) -->
                 <StackPanel x:Name="TopButtons" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnMore" Style="{StaticResource IconButton}" ToolTip="More" />
                     <Button x:Name="BtnOpen" Style="{StaticResource IconButton}" ToolTip="Open file" />
                     <Button x:Name="BtnBright" Style="{StaticResource IconButton}" ToolTip="Brightness" />
                     <Button x:Name="BtnSettings" Style="{StaticResource IconButton}" ToolTip="Settings" />
@@ -159,6 +160,23 @@
             <Border x:Name="HoverTip" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,58"
                     Background="#E00B1714" CornerRadius="6" Padding="8,3" Visibility="Collapsed" IsHitTestVisible="False">
                 <TextBlock x:Name="HoverTipText" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="White" />
+            </Border>
+        </Grid>
+
+        <!-- ===== photo editor (covers everything while open) ===== -->
+        <Grid x:Name="EditorLayer" Background="#FF0A0D0C" Visibility="Collapsed">
+            <TextBlock x:Name="EditTitle" Margin="18,16,18,0" VerticalAlignment="Top" FontSize="14"
+                       TextTrimming="CharacterEllipsis" Foreground="{StaticResource TextMain}" />
+            <TextBlock x:Name="EditInfo" Margin="18,16,18,0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                       FontFamily="{StaticResource MonoFont}" FontSize="12.5" Foreground="{StaticResource TextDim}" />
+            <Grid x:Name="EditStage" Margin="24,56,24,96">
+                <Image x:Name="EditImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality" />
+                <Canvas x:Name="CropCanvas" Background="#01000000" Visibility="Collapsed" ClipToBounds="True" />
+            </Grid>
+            <Border x:Name="EditBar" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"
+                    Background="#EB141A18" CornerRadius="14" Padding="8,6" BorderBrush="#22FFFFFF" BorderThickness="1">
+                <StackPanel x:Name="EditButtons" Orientation="Horizontal" />
             </Border>
         </Grid>
     </Grid>

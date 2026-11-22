@@ -131,6 +131,8 @@ public partial class OverlayWindow : Window
         };
 
         BuildEq();
+        InitPhotoEditor();
+        InitMoreMenu();
         ApplySettings();
         SetShape("drewplayer");
         UpdateHint();

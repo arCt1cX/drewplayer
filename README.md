@@ -29,7 +29,9 @@ decide what every key, click and on-screen button does — without ever editing 
 - **Tabs** — open several files in one window instead of a pile of windows.
 - **Watch while downloading** — open a `.crdownload` / `.part` file and it keeps playing as the download grows.
 - **Previous / next file** in the same folder, following the sort order you see in File Explorer.
-- **Photo viewer** — wheel to zoom, drag to pan, arrows for the next photo.
+- **Photo viewer and editor** — wheel to zoom, drag to pan, arrows for the next photo; rotate, flip and crop (free or 1:1, 4:3, 3:2, 16:9), then save in place or as a copy. Phone photos are shown upright (EXIF orientation).
+- **Quick actions** in the ⋯ menu — copy the image or the current video frame, set a photo as desktop background, show in folder, move to the Recycle Bin.
+- **Video tools** — rotate sideways phone videos, aspect ratio override, A-B loop, audio delay, external subtitles, deinterlacing.
 - **Brightness control**, playback speed, subtitles and audio tracks, frame stepping, screenshots.
 - **Your colors everywhere** — accent color, app icon and per-type file icons (video, audio, photo, download) so you can tell files apart in Explorer at a glance.
 - **Proper Windows citizen** — single instance, file associations without admin rights, opens directly in fullscreen if you want, no flicker on open or close.
@@ -112,6 +114,9 @@ Everything below can be changed in **Settings → Keys / Mouse**.
 | `Z` | Zen mode | | Drag | Move the window |
 | `Page Up` / `Page Down` | Previous / next file | | | |
 | `Ctrl+T` / `Ctrl+W` / `Ctrl+Tab` | New / close / next tab | | | |
+| `E` / `R` | Edit photo / rotate | | | |
+| `B` | A-B loop | | | |
+| `Delete` | Move to the Recycle Bin | | | |
 | `I` | File info (codec, resolution, GPU decoding) | | | |
 | `Ctrl+,` | Settings | | | |
 

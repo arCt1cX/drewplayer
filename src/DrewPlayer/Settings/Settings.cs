@@ -107,7 +107,7 @@ public sealed class WindowSettings
 /// </summary>
 public sealed class LayoutSettings
 {
-    public List<string> Top { get; set; } = ["open", "brightness", "settings", "zen", "minimize", "close"];
+    public List<string> Top { get; set; } = ["more", "open", "brightness", "settings", "zen", "minimize", "close"];
     public List<string> Bottom { get; set; } = ["prev", "play", "next", "wave", "time", "volume", "autonext", "fullscreen"];
 
     public void Normalize()

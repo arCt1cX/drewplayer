@@ -18,6 +18,8 @@ public partial class OverlayWindow
         if (key is Key.LeftCtrl or Key.RightCtrl or Key.LeftShift or Key.RightShift or Key.LeftAlt or Key.RightAlt
             or Key.LWin or Key.RWin or Key.ImeProcessed or Key.DeadCharProcessed) return;
 
+        if (IsEditing && HandleEditorKey(key, Keyboard.Modifiers)) { e.Handled = true; return; }
+
         if (_keys.TryGetValue((key, Keyboard.Modifiers), out var action))
         {
             _main.RunAction(action);

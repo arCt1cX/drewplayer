@@ -110,6 +110,12 @@ public partial class MainWindow
         _mpv.Set("video-zoom", 0.0);
         _mpv.Set("video-pan-x", 0.0);
         _mpv.Set("video-pan-y", 0.0);
+        // per-file video tools start clean on every file
+        _mpv.Set("video-rotate", 0.0);
+        _mpv.Set("video-aspect-override", "no");
+        _mpv.Set("ab-loop-a", "no");
+        _mpv.Set("ab-loop-b", "no");
+        _aspectIndex = 0;
         if (start is > 0.5)
         {
             // tab position takes precedence over the saved resume point

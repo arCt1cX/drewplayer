@@ -23,7 +23,7 @@ public sealed class SettingsStore : IDisposable
         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
 
-    public Settings Current { get; private set; } = new() { Version = 7, Keys = DefaultKeys() };
+    public Settings Current { get; private set; } = new() { Version = 8, Keys = DefaultKeys() };
     public string? LastError { get; private set; }
 
     /// <summary>On the UI thread. Argument: true if the change comes from the settings window.</summary>
@@ -102,6 +102,21 @@ public sealed class SettingsStore : IDisposable
                 play = b.IndexOf("play");
                 if (!placed("next")) b.Insert(play >= 0 ? play + 1 : Math.Min(1, b.Count), "next");
                 s.Version = 7;
+                migrated = true;
+            }
+            if (s.Version < 8)
+            {
+                // v8: photo editor, video tools and the ⋯ menu (keys added only if free)
+                var add = new Dictionary<string, string>
+                {
+                    ["E"] = "edit_photo", ["R"] = "rotate", ["Ctrl+C"] = "copy_image",
+                    ["Delete"] = "delete_file", ["B"] = "ab_loop", ["Apps"] = "menu",
+                };
+                var keys = new Dictionary<string, string>(s.Keys, StringComparer.OrdinalIgnoreCase);
+                foreach (var (k, v) in add) keys.TryAdd(k, v);
+                s.Keys = keys;
+                if (!s.Layout.Top.Contains("more") && !s.Layout.Bottom.Contains("more")) s.Layout.Top.Insert(0, "more");
+                s.Version = 8;
                 migrated = true;
             }
             s.Layout ??= new LayoutSettings();
@@ -200,6 +215,12 @@ public sealed class SettingsStore : IDisposable
         ["PageDown"] = "next_file",
         ["PageUp"] = "prev_file",
         ["Ctrl+Comma"] = "settings",
+        ["E"] = "edit_photo",
+        ["R"] = "rotate",
+        ["Ctrl+C"] = "copy_image",
+        ["Delete"] = "delete_file",
+        ["B"] = "ab_loop",
+        ["Apps"] = "menu",
         ["Q"] = "quit",
         ["D0"] = "seek_percent 0",
         ["D1"] = "seek_percent 10",

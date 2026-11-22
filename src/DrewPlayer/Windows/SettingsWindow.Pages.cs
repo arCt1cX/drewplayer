@@ -183,7 +183,8 @@ public partial class SettingsWindow
         Card("Navigation",
             Row("Mouse wheel zooms", "When off, the wheel goes to the previous/next photo",
                 Toggle(_s.Images.WheelZoom, v => _s.Images.WheelZoom = v)));
-        Hint("On photos, the ← → keys go to the previous/next photo in the folder, " +
+        Hint("Press E (or use the ⋯ menu) to edit a photo: rotate, flip, crop, then save it in place or as a copy. " +
+             "On photos, the ← → keys go to the previous/next photo in the folder, " +
              "the volume keys zoom, 0 resets zoom to 100%. While zoomed in, drag to pan around the image.");
     }
 
@@ -229,7 +230,7 @@ public partial class SettingsWindow
                 {
                     if (MessageBox.Show(this, "Reset all settings (including keys) to their defaults?", "DrewPlayer",
                             MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
-                    _s = new Settings { Version = 7, Keys = SettingsStore.DefaultKeys() };
+                    _s = new Settings { Version = 8, Keys = SettingsStore.DefaultKeys() };
                     App.ApplyAccent(_s.Ui.AccentColor);
                     _saving = true; _store.Save(_s); _saving = false;
                     Build();

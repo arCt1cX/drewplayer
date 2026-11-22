@@ -29,6 +29,22 @@ public partial class MainWindow
     {
         var dir = BenchDir!;
         Directory.CreateDirectory(dir);
+
+        if (IsImage && _overlay != null)
+        {
+            // photo editor screenshots
+            await Task.Delay(800);
+            foreach (var crop in new[] { false, true })
+            {
+                _overlay.DebugEditor(CurrentFile!, crop);
+                await Task.Delay(700);
+                var png = new PngBitmapEncoder();
+                png.Frames.Add(BitmapFrame.Create(_overlay.DebugRender()));
+                using (var fs = File.Create(IOPath.Combine(dir, crop ? "editor-crop.png" : "editor.png"))) png.Save(fs);
+            }
+            Close();
+            return;
+        }
         var proc = Process.GetCurrentProcess();
         var firstFrame = DateTime.Now - proc.StartTime;
 

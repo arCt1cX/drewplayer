@@ -13,6 +13,7 @@ public static class LayoutCatalog
 {
     public static readonly LayoutItem[] All =
     [
+        new("more", "More (⋯ menu)", false),
         new("open", "Open file", false),
         new("brightness", "Brightness", false),
         new("settings", "Settings", false),

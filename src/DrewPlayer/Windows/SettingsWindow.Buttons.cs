@@ -166,6 +166,7 @@ public partial class SettingsWindow
             "time" => new TextBlock { Text = "1:23 / 4:56", FontFamily = (FontFamily)FindResource("MonoFont"), FontSize = 11.5, Foreground = Brushes.White, VerticalAlignment = VerticalAlignment.Center },
             "volume" => VolumeChip(),
             "wave" => WaveChip(),
+            "more" => Icons.Make(Icons.More, 18, stroke: 3),
             "open" => Icons.Make(Icons.Folder, 17),
             "brightness" => Icons.Make(Icons.Sun, 17),
             "settings" => Icons.Make(Icons.Settings, 17),

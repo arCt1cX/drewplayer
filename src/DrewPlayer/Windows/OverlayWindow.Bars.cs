@@ -114,7 +114,7 @@ public partial class OverlayWindow
 
     private IEnumerable<(string id, FrameworkElement el)> LayoutElements() =>
     [
-        ("open", BtnOpen), ("brightness", BtnBright), ("settings", BtnSettings), ("zen", BtnZen),
+        ("more", BtnMore), ("open", BtnOpen), ("brightness", BtnBright), ("settings", BtnSettings), ("zen", BtnZen),
         ("minimize", BtnMin), ("close", BtnClose), ("prev", BtnPrevFile), ("play", BtnPlay), ("next", BtnNextFile), ("time", TimeText),
         ("volume", VolGroup), ("autonext", BtnAutoNext), ("fullscreen", BtnFs),
     ];

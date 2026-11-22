@@ -3,6 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
+        <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="Themes/Controls.xaml" />
+        </ResourceDictionary.MergedDictionaries>
         <SolidColorBrush x:Key="Accent" Color="#5DCAA5" />
         <SolidColorBrush x:Key="TextMain" Color="#F2FFFFFF" />
         <SolidColorBrush x:Key="TextDim" Color="#B3FFFFFF" />
@@ -50,5 +54,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

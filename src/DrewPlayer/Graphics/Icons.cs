@@ -24,6 +24,14 @@ internal static class Icons
     public const string SkipPrev = "M18,6 L9.5,12 L18,18 Z M6,6 V18";
     /// <summary>"Auto-advance at end of file": list + play.</summary>
     public const string AutoNext = "M4,6 H15 M4,11 H15 M4,16 H9 M13.5,14 L19.5,17.5 L13.5,21 Z";
+    public const string More = "M5,12 H5.01 M12,12 H12.01 M19,12 H19.01";
+    public const string RotateLeft = "M4.5,12 A7.5,7.5 0 1 0 7,6.4 M4,3.5 V8.5 H9";
+    public const string RotateRight = "M19.5,12 A7.5,7.5 0 1 1 17,6.4 M20,3.5 V8.5 H15";
+    public const string FlipH = "M12,3 V21 M9,7 L4,17 H9 Z M15,7 L20,17 H15 Z";
+    public const string FlipV = "M3,12 H21 M7,9 L17,4 V9 Z M7,15 L17,20 V15 Z";
+    public const string Crop = "M7,3 V17 H21 M3,7 H17 V21";
+    public const string Undo = "M9,14 L4,9 L9,4 M4,9 H14.5 A5.5,5.5 0 0 1 14.5,20 H11";
+    public const string Check = "M5,12.5 L10,17.5 L19,7";
     public const string Plus = "M12,5 V19 M5,12 H19";
     public const string Prev = "M15,5 L8,12 L15,19";
     public const string Next = "M9,5 L16,12 L9,19";
