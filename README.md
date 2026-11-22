@@ -65,7 +65,13 @@ DrewPlayer is a thin WPF shell around **libmpv**, the engine behind mpv — the 
 - Windows 10 or 11, 64-bit
 - [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) (the SDK if you build from source)
 
-### Build and install
+### Download
+
+Grab `DrewPlayer-x.y.z-win-x64.zip` from the [latest release](https://github.com/arCt1cX/drewplayer/releases/latest),
+extract it somewhere permanent (e.g. `%LOCALAPPDATA%\Programs\DrewPlayer`) and run `DrewPlayer.exe`.
+Everything, libmpv included, is in the zip.
+
+### Build and install from source
 
 ```powershell
 git clone https://github.com/arCt1cX/drewplayer.git
