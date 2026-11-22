@@ -1,0 +1,165 @@
+﻿<Window x:Class="DrewPlayer.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DrewPlayer" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" ResizeMode="NoResize" AllowDrop="True"
+        FontFamily="{StaticResource UiFont}" Icon="/Assets/drewplayer.ico">
+    <Grid x:Name="Root" Background="#01000000">
+
+        <!-- ===== empty state ===== -->
+        <StackPanel x:Name="EmptyState" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+            <Image x:Name="EmptyIcon" Width="76" Height="76" HorizontalAlignment="Center"
+                   RenderOptions.BitmapScalingMode="HighQuality" />
+            <TextBlock Text="Drop a video, a song or a photo here" Margin="0,22,0,0" HorizontalAlignment="Center"
+                       FontSize="18" Foreground="{StaticResource TextMain}" />
+            <TextBlock x:Name="EmptyHint" Text="or press O to open a file" Margin="0,6,0,0" HorizontalAlignment="Center"
+                       FontSize="13" Foreground="{StaticResource TextDim}" />
+        </StackPanel>
+
+        <!-- ===== audio without cover art ===== -->
+        <StackPanel x:Name="AudioCard" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Margin="24,0,24,48" IsHitTestVisible="False">
+            <StackPanel x:Name="Eq" Orientation="Horizontal" Height="56" HorizontalAlignment="Center" />
+            <TextBlock x:Name="AudioTitle" Margin="0,20,0,0" FontSize="20" FontWeight="SemiBold" MaxWidth="460"
+                       TextAlignment="Center" TextTrimming="CharacterEllipsis" Foreground="{StaticResource TextMain}" />
+            <TextBlock x:Name="AudioArtist" Margin="0,4,0,0" FontSize="14" MaxWidth="460" TextAlignment="Center"
+                       TextTrimming="CharacterEllipsis" Foreground="{StaticResource TextDim}" />
+        </StackPanel>
+
+        <!-- ===== top bar ===== -->
+        <Grid x:Name="TopBar" VerticalAlignment="Top" Height="76">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#A6000000" Offset="0" />
+                    <GradientStop Color="#00000000" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid Margin="12,8,8,0" VerticalAlignment="Top" Height="40">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <DockPanel LastChildFill="True" Margin="0,0,12,0">
+                    <Border x:Name="DownloadBadge" DockPanel.Dock="Right" Visibility="Collapsed" Margin="8,0,0,0" VerticalAlignment="Center"
+                            CornerRadius="10" Padding="10,3" Background="#33FFFFFF" IsHitTestVisible="False">
+                        <TextBlock Text="⬇ downloading" FontSize="12" Foreground="{DynamicResource Accent}" />
+                    </Border>
+                    <Grid>
+                        <TextBlock x:Name="TitleText" Margin="6,0,0,0" VerticalAlignment="Center" FontSize="14"
+                                   TextTrimming="CharacterEllipsis" Foreground="{StaticResource TextMain}" IsHitTestVisible="False" />
+                        <StackPanel x:Name="TabStrip" Orientation="Horizontal" Visibility="Collapsed" VerticalAlignment="Center" />
+                    </Grid>
+                </DockPanel>
+                <!-- top bar buttons: order/placement come from the settings (Layout) -->
+                <StackPanel x:Name="TopButtons" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnOpen" Style="{StaticResource IconButton}" ToolTip="Open file" />
+                    <Button x:Name="BtnBright" Style="{StaticResource IconButton}" ToolTip="Brightness" />
+                    <Button x:Name="BtnSettings" Style="{StaticResource IconButton}" ToolTip="Settings" />
+                    <Button x:Name="BtnZen" Style="{StaticResource IconButton}" ToolTip="Zen mode" />
+                    <Button x:Name="BtnMin" Style="{StaticResource IconButton}" ToolTip="Minimize" />
+                    <Button x:Name="BtnClose" Style="{StaticResource CloseButton}" ToolTip="Close" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!-- ===== brightness panel ===== -->
+        <Border x:Name="BrightPanel" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,52,12,0"
+                Background="#EB0B1714" CornerRadius="12" Padding="16,12" Visibility="Collapsed">
+            <StackPanel>
+                <DockPanel Margin="0,0,0,10">
+                    <TextBlock x:Name="BrightValue" DockPanel.Dock="Right" FontFamily="{StaticResource MonoFont}" FontSize="12.5"
+                               Foreground="{DynamicResource Accent}" VerticalAlignment="Center" />
+                    <TextBlock Text="Brightness" FontSize="13" Foreground="{StaticResource TextMain}" VerticalAlignment="Center" />
+                </DockPanel>
+                <Grid x:Name="BrightBar" Width="200" Height="24" Background="#01000000" Cursor="Hand">
+                    <Border Height="4" CornerRadius="2" Background="#40FFFFFF" VerticalAlignment="Center" />
+                    <Border Width="2" Height="10" Background="#80FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Canvas x:Name="BrightCanvas" IsHitTestVisible="False">
+                        <Border x:Name="BrightFill" Height="4" CornerRadius="2" Background="{DynamicResource Accent}" Canvas.Top="10" />
+                        <Ellipse x:Name="BrightKnob" Width="14" Height="14" Fill="White" Canvas.Top="5" />
+                    </Canvas>
+                </Grid>
+                <Button x:Name="BtnBrightReset" Content="Reset" HorizontalAlignment="Right" Margin="0,10,0,0" Padding="10,4"
+                        Focusable="False" Cursor="Hand" Foreground="White" FontSize="12">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="B" Background="#26FFFFFF" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="B" Property="Background" Value="#40FFFFFF" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- ===== play/pause flash in the center ===== -->
+        <Border x:Name="CenterFlash" Width="84" Height="84" CornerRadius="42" Background="#B30B1714"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" IsHitTestVisible="False"
+                RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform>
+                <ScaleTransform x:Name="FlashScale" ScaleX="1" ScaleY="1" />
+            </Border.RenderTransform>
+        </Border>
+
+        <!-- ===== OSD messages ===== -->
+        <Border x:Name="OsdBox" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,64,0,0"
+                Background="#E00B1714" CornerRadius="10" Padding="16,9" Opacity="0" IsHitTestVisible="False">
+            <TextBlock x:Name="OsdText" FontSize="15" Foreground="White" />
+        </Border>
+
+        <!-- ===== bottom bar ===== -->
+        <Grid x:Name="BottomBar" VerticalAlignment="Bottom" Height="124">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#00000000" Offset="0" />
+                    <GradientStop Color="#B3000000" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <!-- left | waveform | right: what goes where comes from the Layout setting -->
+            <DockPanel VerticalAlignment="Bottom" Margin="12,0,12,12" Height="40" LastChildFill="True">
+                <StackPanel x:Name="BottomLeft" DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnPrevFile" Style="{StaticResource IconButton}" ToolTip="Previous file (Page Up)" />
+                    <Button x:Name="BtnPlay" Style="{StaticResource IconButton}" Width="42" Height="40" />
+                    <Button x:Name="BtnNextFile" Style="{StaticResource IconButton}" ToolTip="Next file (Page Down)" />
+                </StackPanel>
+                <StackPanel x:Name="BottomRight" DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="TimeText" Margin="4,0,10,0" VerticalAlignment="Center"
+                               FontFamily="{StaticResource MonoFont}" FontSize="12.5" Foreground="{StaticResource TextMain}" />
+                    <StackPanel x:Name="VolGroup" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="BtnVol" Style="{StaticResource IconButton}" ToolTip="Mute (M)" />
+                        <Grid x:Name="VolBar" Width="78" Height="26" Margin="2,0,10,0" Background="#01000000" Cursor="Hand">
+                            <Border Height="4" CornerRadius="2" Background="#40FFFFFF" VerticalAlignment="Center" />
+                            <Border x:Name="VolFill" Height="4" CornerRadius="2" Background="{DynamicResource Accent}"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" />
+                        </Grid>
+                    </StackPanel>
+                    <TextBlock x:Name="SpeedText" Margin="0,0,8,0" VerticalAlignment="Center" Visibility="Collapsed"
+                               FontFamily="{StaticResource MonoFont}" FontSize="12.5" Foreground="{DynamicResource Accent}" />
+                    <Button x:Name="BtnAutoNext" Style="{StaticResource IconButton}" />
+                    <Button x:Name="BtnFs" Style="{StaticResource IconButton}" ToolTip="Fullscreen (F)" />
+                </StackPanel>
+                <Canvas x:Name="Wave" Height="30" Margin="10,0,12,0" VerticalAlignment="Center"
+                        Background="#01000000" Cursor="Hand" />
+            </DockPanel>
+
+            <StackPanel x:Name="ImageNav" VerticalAlignment="Bottom" Margin="0,0,0,12" Height="40" Orientation="Horizontal"
+                        HorizontalAlignment="Center" Visibility="Collapsed">
+                <Button x:Name="BtnPrev" Style="{StaticResource IconButton}" ToolTip="Previous photo" />
+                <TextBlock x:Name="ImageCounter" Margin="14,0" VerticalAlignment="Center" MinWidth="60" TextAlignment="Center"
+                           FontFamily="{StaticResource MonoFont}" FontSize="13" Foreground="{StaticResource TextMain}" />
+                <Button x:Name="BtnNext" Style="{StaticResource IconButton}" ToolTip="Next photo" />
+            </StackPanel>
+
+            <Border x:Name="HoverTip" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,58"
+                    Background="#E00B1714" CornerRadius="6" Padding="8,3" Visibility="Collapsed" IsHitTestVisible="False">
+                <TextBlock x:Name="HoverTipText" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="White" />
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

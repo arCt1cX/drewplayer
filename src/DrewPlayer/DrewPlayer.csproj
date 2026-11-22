@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>DrewPlayer</AssemblyName>
+    <RootNamespace>DrewPlayer</RootNamespace>
+    <ApplicationIcon>Assets\drewplayer.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.0</Version>
+    <Product>DrewPlayer</Product>
+    <Description>A lightweight, fully customizable media player for Windows, powered by libmpv.</Description>
+    <TieredPGO>true</TieredPGO>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\drewplayer.ico" />
+    <!-- libmpv is not committed: run scripts\get-libmpv.ps1 to download it into lib\ -->
+    <None Include="..\..\lib\libmpv-2.dll" Condition="Exists('..\..\lib\libmpv-2.dll')" Link="libmpv-2.dll" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

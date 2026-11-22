@@ -1,0 +1,14 @@
+# build output
+bin/
+obj/
+dist/
+
+# libmpv is downloaded by scripts/get-libmpv.ps1, never committed
+lib/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
